@@ -15,8 +15,10 @@ pub enum Action {
     Exit,
 }
 
+// TODO: derive the appropriate traits
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub enum Status {
+    // TODO: add fields (make sure the fields are public)
     Open,
     InProgress,
     Resolved,
@@ -42,8 +44,10 @@ impl Display for Status {
     }
 }
 
+// TODO: derive the appropriate traits
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct Epic {
+    // TODO: add fields (make sure the fields are public)
     pub name: String,
     pub description: String,
     pub status: Status,
@@ -52,6 +56,7 @@ pub struct Epic {
 
 impl Epic {
     pub fn new(name: String, description: String) -> Self {
+        // TODO: by default the status should be set to open and the stories should be an empty vector
         Self {
             name,
             description,
@@ -61,8 +66,10 @@ impl Epic {
     }
 }
 
+// TODO: derive the appropriate traits
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct Story {
+    // TODO: add fields (make sure the fields are public)
     pub name: String,
     pub description: String,
     pub status: Status,
@@ -70,6 +77,7 @@ pub struct Story {
 
 impl Story {
     pub fn new(name: String, description: String) -> Self {
+        // TODO: by default the status should be set to open
         Self {
             name,
             description,
@@ -78,8 +86,10 @@ impl Story {
     }
 }
 
+// TODO: derive the appropriate traits
 #[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Clone)]
 pub struct DBState {
+    // TODO: add fields (make sure the fields are public)
     pub last_item_id: u32,
     pub epics: HashMap<u32, Epic>,
     pub stories: HashMap<u32, Story>

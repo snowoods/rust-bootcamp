@@ -25,6 +25,7 @@ impl Page for HomePage {
         println!("----------------------------- EPICS -----------------------------");
         println!("     id     |               name               |      status      ");
 
+        // TODO: print out epics using get_column_string(). also make sure the epics are sorted by id
         let epics = self.db.read_db()?.epics;
 
         for id in epics.keys().sorted() {
@@ -78,6 +79,7 @@ impl Page for EpicDetail {
         println!("------------------------------ EPIC ------------------------------");
         println!("  id  |     name     |         description         |    status    ");
 
+        // TODO: print out epic details using get_column_string()
         let id_col = get_column_string(&self.epic_id.to_string(), 5);
         let name_col = get_column_string(&epic.name, 12);
         let desc_col = get_column_string(&epic.description, 27);
@@ -91,6 +93,7 @@ impl Page for EpicDetail {
 
         let stories = &db_state.stories;
 
+        // TODO: print out stories using get_column_string(). also make sure the stories are sorted by id
         for id in epic.stories.iter().sorted() {
             let story = &stories[id];
             let id_col = get_column_string(&id.to_string(), 11);
@@ -108,6 +111,7 @@ impl Page for EpicDetail {
     }
 
     fn handle_input(&self, input: &str) -> Result<Option<Action>> {
+        // match against the user input and return the corresponding action. If the user input was invalid return None.
         let db_state = self.db.read_db()?;
         let stories = db_state.stories;
 
@@ -145,6 +149,8 @@ impl Page for StoryDetail {
 
         println!("------------------------------ STORY ------------------------------");
         println!("  id  |     name     |         description         |    status    ");
+
+        // TODO: print out story details using get_column_string()
         let id_col = get_column_string(&self.story_id.to_string(), 5);
         let name_col = get_column_string(&story.name, 12);
         let desc_col = get_column_string(&story.description, 27);

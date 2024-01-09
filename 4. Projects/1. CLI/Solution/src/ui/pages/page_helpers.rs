@@ -1,6 +1,7 @@
 use ellipse::Ellipse;
 
 pub fn get_column_string(text: &str, width: usize) -> String {
+    // use the truncate_ellipse function from the ellipse crate
     let len = text.len();
 
     match len.cmp(&width) {

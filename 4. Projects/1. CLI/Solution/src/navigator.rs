@@ -15,25 +15,31 @@ impl Navigator {
     }
 
     pub fn get_current_page(&self) -> Option<&Box<dyn Page>> {
+        // this should always return the last element in the pages vector
         self.pages.last()
     }
 
     pub fn handle_action(&mut self, action: Action) -> Result<()> {
         match action {
             Action::NavigateToEpicDetail { epic_id } => {
+                // create a new EpicDetail instance and add it to the pages vector
                 self.pages.push(Box::new(EpicDetail { epic_id, db: Rc::clone(&self.db) }));
             }
             Action::NavigateToStoryDetail { epic_id, story_id } => {
+                // create a new StoryDetail instance and add it to the pages vector
                 self.pages.push(Box::new(StoryDetail { epic_id, story_id, db: Rc::clone(&self.db) }));
             }
             Action::NavigateToPreviousPage => {
+                // remove the last page from the pages vector
                 if !self.pages.is_empty() { self.pages.pop(); }
             }
             Action::CreateEpic => {
+                // prompt the user to create a new epic and persist it in the database
                 let epic = (self.prompts.create_epic)();
                 self.db.create_epic(epic).with_context(|| anyhow!("failed to create epic!"))?;
             }
             Action::UpdateEpicStatus { epic_id } => {
+                // prompt the user to update status and persist it in the database
                 let status = (self.prompts.update_status)();
 
                 if let Some(status) = status {
@@ -41,6 +47,7 @@ impl Navigator {
                 }
             }
             Action::DeleteEpic { epic_id } => {
+                // prompt the user to delete the epic and persist it in the database
                 if (self.prompts.delete_epic)() {
                     self.db.delete_epic(epic_id).with_context(|| anyhow!("failed to delete epic!"))?;
 
@@ -50,10 +57,12 @@ impl Navigator {
                 }
             }
             Action::CreateStory { epic_id } => {
+                // prompt the user to create a new story and persist it in the database
                 let story = (self.prompts.create_story)();
                 self.db.create_story(story, epic_id).with_context(|| anyhow!("failed to create story!"))?;
             }
             Action::UpdateStoryStatus { story_id } => {
+                // prompt the user to update status and persist it in the database
                 let status = (self.prompts.update_status)();
 
                 if let Some(status) = status {
@@ -61,6 +70,7 @@ impl Navigator {
                 }
             }
             Action::DeleteStory { epic_id, story_id } => {
+                // prompt the user to delete the story and persist it in the database
                 if (self.prompts.delete_story)() {
                     self.db.delete_story(epic_id, story_id).with_context(|| anyhow!("failed to delete story!"))?;
 
@@ -70,6 +80,7 @@ impl Navigator {
                 }
             }
             Action::Exit => {
+                // remove all pages from the pages vector
                 self.pages.clear()
             },
         }

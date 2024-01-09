@@ -8,6 +8,7 @@ pub struct JiraDatabase {
     pub database: Box<dyn Database>
 }
 
+// TODO: CRUD
 impl JiraDatabase {
     pub fn new(file_path: String) -> Self {
         Self {
@@ -103,12 +104,14 @@ struct JSONFileDatabase {
 
 impl Database for JSONFileDatabase {
     fn read_db(&self) -> Result<DBState> {
+        // TODO: read_db
         let db_content = fs::read_to_string(&self.file_path)?;
         let parsed: DBState = serde_json::from_str(&db_content)?;
         Ok(parsed)
     }
 
     fn write_db(&self, db_state: &DBState) -> Result<()> {
+        // TODO: write_db
         fs::write(&self.file_path, &serde_json::to_vec(db_state)?)?;
         Ok(())
     }
