@@ -1,8 +1,13 @@
 use rocket::{serde::json::Json, State};
 
-use crate::models::*;
+use crate::{
+    models::*,
+    persistance::{answers_dao::AnswersDao, questions_dao::QuestionsDao},
+};
 
 mod handlers_inner;
+
+use handlers_inner::*;
 
 // ---- CRUD for Questions ----
 
@@ -25,7 +30,8 @@ pub async fn create_question(
 
 #[get("/questions")]
 pub async fn read_questions(
-    questions_dao: todo!(), // add the appropriate type annotation
+    // add the appropriate type annotation
+    questions_dao: &State<Box<dyn QuestionsDao + Sync + Send>>, 
 ) -> Json<Vec<QuestionDetail>> {
     Json (
         vec![QuestionDetail {
@@ -40,7 +46,8 @@ pub async fn read_questions(
 #[delete("/question", data = "<question_uuid>")]
 pub async fn delete_question(
     question_uuid: Json<QuestionId>,
-    questions_dao: todo!(), // add the appropriate type annotation
+    // add the appropriate type annotation
+    questions_dao: &State<Box<dyn QuestionsDao + Sync + Send>>,
 ) {
     // ...
 }
@@ -67,7 +74,8 @@ pub async fn create_answer(
 #[get("/answers", data = "<question_uuid>")]
 pub async fn read_answers(
     question_uuid: Json<QuestionId>,
-    answers_dao: todo!(), // add the appropriate type annotation
+    // add the appropriate type annotation
+    answers_dao: &State<Box<dyn AnswersDao + Send + Sync>>, 
 ) -> Json<Vec<AnswerDetail>> {
     Json (
         vec![AnswerDetail {
@@ -82,7 +90,8 @@ pub async fn read_answers(
 #[delete("/answer", data = "<answer_uuid>")]
 pub async fn delete_answer(
     answer_uuid: Json<AnswerId>,
-    answers_dao: todo!(), // add the appropriate type annotation
+    // add the appropriate type annotation
+    answers_dao: &State<Box<dyn AnswersDao + Send + Sync>>,
 ) {
     // ...
 }
